@@ -1,17 +1,19 @@
 package io.github.AndrewSumsion.soundgenerator;
 
-public abstract class FrequencyGenerator extends SoundGenerator {
-    protected float frequency;
+import io.github.AndrewSumsion.soundgenerator.valuecontrollers.ValueController;
 
-    public FrequencyGenerator(float frequency) {
+public abstract class FrequencyGenerator extends SoundGenerator {
+    protected ValueController frequency;
+
+    public FrequencyGenerator(ValueController frequency) {
         this.frequency = frequency;
     }
 
     public float getFrequency() {
-        return frequency;
+        return frequency.checkValue();
     }
 
-    public void setFrequency(float frequency) {
+    public void setFrequency(ValueController frequency) {
         this.frequency = frequency;
     }
 }

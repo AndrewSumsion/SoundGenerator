@@ -1,11 +1,12 @@
 package io.github.AndrewSumsion.soundgenerator;
 
+import io.github.AndrewSumsion.soundgenerator.valuecontrollers.ValueController;
+
 public class Bandwither extends SoundHandler {
     private float lastSample;
-    private float maxDifference;
+    private ValueController maxDifference;
 
-    public Bandwither(float maxDifference) {
-        if(maxDifference < 0) throw new IllegalArgumentException("maxDifference must be positive");
+    public Bandwither(ValueController maxDifference) {
         this.maxDifference = maxDifference;
     }
 
@@ -21,11 +22,11 @@ public class Bandwither extends SoundHandler {
 
     private float getSample(float lastSample, float currentSample) {
         float difference = currentSample - lastSample;
-        if(Math.abs(difference) > this.maxDifference) {
+        if(Math.abs(difference) > this.maxDifference.value()) {
             if(difference > 0) {
-                return lastSample + maxDifference;
+                return lastSample + maxDifference.value();
             } else if(difference < 0) {
-                return lastSample - maxDifference;
+                return lastSample - maxDifference.value();
             }
             return 0F;
         } else {

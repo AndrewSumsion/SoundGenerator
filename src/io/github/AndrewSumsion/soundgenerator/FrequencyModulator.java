@@ -1,37 +1,31 @@
 package io.github.AndrewSumsion.soundgenerator;
 
+import io.github.AndrewSumsion.soundgenerator.valuecontrollers.ValueController;
+
 public class FrequencyModulator extends SoundHandler {
-    private float min;
-    private float max;
-    private int i = 0;
+    private ValueController carrierFrequency;
+    private ValueController amplitude;
+    private int currentSample = 0;
+    private boolean removeCarrierFrequency;
 
-    public FrequencyModulator(float min, float max) {
-        this.min = min;
-        this.max = max;
-    }
-
-    public FrequencyModulator() {
-        this(870F, 880F);
+    public FrequencyModulator(ValueController carrierFrequency, ValueController amplitude, boolean removeCarrierFrequency) {
+        this.carrierFrequency = carrierFrequency;
+        this.amplitude = amplitude;
+        this.removeCarrierFrequency = removeCarrierFrequency;
     }
 
     @Override
     public boolean handle(SoundBuffer buffer) {
         for(int i = 0; i < buffer.size(); i++) {
             float sample = buffer.get(i);
-            float frequency = getFrequency(sample);
-            float newSample = sampleSine(frequency);
+            float newSample = (float)Math.sin((currentSample * ((carrierFrequency.value() * 2) / sampleRate) + sample * amplitude.value()) * Math.PI);
+            if(removeCarrierFrequency) {
+                newSample -= (float)Math.sin(currentSample * ((carrierFrequency.value() * 2) / sampleRate) * Math.PI);
+            }
             buffer.set(i, newSample);
+            currentSample++;
         }
+
         return true;
-    }
-
-    private float getFrequency(float sample) {
-        float percentage = (sample + 1) / 2;
-        return ((max - min) * percentage) + min;
-    }
-
-    private float sampleSine(float frequency) {
-        this.i++;
-        return (float)Math.sin((float)i * ((frequency * 2F) / (float)sampleRate) * Math.PI);
     }
 }
