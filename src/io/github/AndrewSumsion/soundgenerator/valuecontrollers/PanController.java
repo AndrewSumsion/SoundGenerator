@@ -6,15 +6,15 @@ public class PanController extends ValueController {
     private int length;
     private int delay;
 
-    public PanController(float startValue, float endValue, int length, int delay, int sampleRate) {
+    public PanController(float startValue, float endValue, float length, int delay, int sampleRate) {
         super(sampleRate);
         this.startValue = startValue;
         this.endValue = endValue;
-        this.length = length;
+        this.length = (int)(length * sampleRate);
         this.delay = delay;
     }
 
-    public PanController(float startValue, float endValue, int length, int sampleRate) {
+    public PanController(float startValue, float endValue, float length, int sampleRate) {
         this(startValue, endValue, length, 0, sampleRate);
     }
 
