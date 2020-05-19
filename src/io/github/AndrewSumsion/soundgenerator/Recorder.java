@@ -4,7 +4,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Recorder extends SoundHandler {
-    private SoundBuffer sound = null;
     private List<SoundBuffer> buffer = new LinkedList<SoundBuffer>();
 
     @Override
@@ -13,8 +12,7 @@ public class Recorder extends SoundHandler {
         return true;
     }
 
-    @Override
-    public void finish() {
+    public SoundBuffer getSound() {
         SoundBuffer result = null;
         for(SoundBuffer soundBuffer : buffer) {
             if(result == null) {
@@ -23,10 +21,10 @@ public class Recorder extends SoundHandler {
             }
             result.append(soundBuffer);
         }
-        sound = result;
+        return result;
     }
 
-    public SoundBuffer getSound() {
-        return sound;
+    public void reset() {
+        buffer = new LinkedList<SoundBuffer>();
     }
 }
